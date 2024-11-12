@@ -1,0 +1,146 @@
+hazme el codigo de una base de datos que se llame spa serenidad, las tablas que tiene son 
+
+usuarios
+tratamientos
+clientes
+empleados
+control
+insumos
+servicios
+
+de la tabla usuarios quiero el id primary key, tipo de usuario, nombre, password
+de la tabla de tratamientos quiero el id del tratamiento primary key, el nombre, la duracion, y el precio; 
+de la tabla de empleados quiero el id de empleado como primary key, nombre, apellidos,num de telefono; 
+de la tabla de clientes quiero el nombre del cliente como primary key, apellidos, correo electronico, numero de telefono y como foreign key el id del tratamiento de la tabla de tratamientos, 
+de la tabla de insumos quiero el nombre del material como primary key, el costo, fecha de compra, cantidad comprada, y la cantidad actual
+de la tabla de control quiero el id como primary key,el id del tratamiento y el nombre del material como foreign key de la tabla de tratamientos y la tabla de insumos respectivamente;
+de la tabla de servicios quiero la fecha en que se hizo el servicio como primary key, el id del cliento como foreign key de la tabla de clientes, el id del tratamiento de la tabla de tratamientos, y el id de empleado de la tabla de empleados
+
+a la tabla de usuarios inserta los datos de 2 usuarios uno es de tipo administrador y tiene acceso a todo y el otro es de tipo actualizar solo tiene permiso de actualizar la informacion de los precios en la tabla de tratamientos
+ en las demas tablas inserta datos aleatorios y pon maximo 5 diferentes por tabla , en la de insumos pueden ser maximo 10 y deben ser insumos que se usarian en un spa para realizar faciales, depilaciones, etc
+
+
+-- Crear la base de datos
+CREATE DATABASE spa_serenidad;
+USE spa_serenidad;
+
+-- Crear tabla de usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_usuario ENUM('administrador', 'actualizar') NOT NULL,
+    nombre VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL
+);
+
+-- Insertar datos en la tabla de usuarios
+INSERT INTO usuarios (tipo_usuario, nombre, password) VALUES
+('administrador', 'admin_user', 'admin123'),
+('actualizar', 'update_user', 'update123');
+
+-- Crear tabla de tratamientos
+CREATE TABLE tratamientos (
+    id_tratamiento INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    duracion INT NOT NULL, -- Duración en minutos
+    precio DECIMAL(10, 2) NOT NULL
+);
+
+-- Insertar datos en la tabla de tratamientos
+INSERT INTO tratamientos (nombre, duracion, precio) VALUES
+('Facial rejuvenecedor', 60, 300.00),
+('Masaje relajante', 90, 450.00),
+('Depilación láser', 45, 200.00),
+('Exfoliación corporal', 30, 150.00),
+('Tratamiento antiedad', 120, 600.00);
+
+-- Crear tabla de empleados
+CREATE TABLE empleados (
+    id_empleado INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    apellidos VARCHAR(50) NOT NULL,
+    num_telefono VARCHAR(20) NOT NULL
+);
+
+-- Insertar datos en la tabla de empleados
+INSERT INTO empleados (nombre, apellidos, num_telefono) VALUES
+('Carlos', 'Pérez', '555-1234'),
+('María', 'López', '555-5678'),
+('Ana', 'García', '555-9876'),
+('Juan', 'Martínez', '555-4321'),
+('Sofía', 'Rodríguez', '555-8765');
+
+-- Crear tabla de clientes
+CREATE TABLE clientes (
+    nombre_cliente VARCHAR(50) PRIMARY KEY,
+    apellidos VARCHAR(50) NOT NULL,
+    correo_electronico VARCHAR(50) NOT NULL,
+    num_telefono VARCHAR(20) NOT NULL,
+    id_tratamiento INT,
+    FOREIGN KEY (id_tratamiento) REFERENCES tratamientos(id_tratamiento)
+);
+
+-- Insertar datos en la tabla de clientes
+INSERT INTO clientes (nombre_cliente, apellidos, correo_electronico, num_telefono, id_tratamiento) VALUES
+('Laura', 'Sánchez', 'laura@example.com', '555-0001', 1),
+('Miguel', 'Ramírez', 'miguel@example.com', '555-0002', 2),
+('Daniela', 'Cruz', 'daniela@example.com', '555-0003', 3),
+('Fernando', 'Jiménez', 'fernando@example.com', '555-0004', 4),
+('Valeria', 'Morales', 'valeria@example.com', '555-0005', 5);
+
+-- Crear tabla de insumos
+CREATE TABLE insumos (
+    nombre_material VARCHAR(50) PRIMARY KEY,
+    costo DECIMAL(10, 2) NOT NULL,
+    fecha_compra DATE NOT NULL,
+    cantidad_comprada INT NOT NULL,
+    cantidad_actual INT NOT NULL
+);
+
+-- Insertar datos en la tabla de insumos
+INSERT INTO insumos (nombre_material, costo, fecha_compra, cantidad_comprada, cantidad_actual) VALUES
+('Aceite de masaje', 120.00, '2023-01-15', 10, 8),
+('Crema hidratante', 200.00, '2023-02-10', 15, 12),
+('Gel exfoliante', 150.00, '2023-03-20', 20, 18),
+('Cera depilatoria', 80.00, '2023-04-05', 25, 20),
+('Mascarilla facial', 50.00, '2023-05-15', 30, 28),
+('Esponjas faciales', 30.00, '2023-06-10', 40, 35),
+('Toallas desechables', 25.00, '2023-07-15', 50, 40),
+('Algodón', 15.00, '2023-08-20', 60, 50),
+('Bálsamo post-tratamiento', 100.00, '2023-09-25', 20, 15),
+('Alcohol antiséptico', 25.00, '2023-10-01', 30, 25);
+
+-- Crear tabla de control
+CREATE TABLE control (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_tratamiento INT,
+    nombre_material VARCHAR(50),
+    FOREIGN KEY (id_tratamiento) REFERENCES tratamientos(id_tratamiento),
+    FOREIGN KEY (nombre_material) REFERENCES insumos(nombre_material)
+);
+
+-- Insertar datos en la tabla de control
+INSERT INTO control (id_tratamiento, nombre_material) VALUES
+(1, 'Aceite de masaje'),
+(1, 'Crema hidratante'),
+(2, 'Mascarilla facial'),
+(2, 'Esponjas faciales'),
+(3, 'Cera depilatoria');
+
+-- Crear tabla de servicios
+CREATE TABLE servicios (
+    fecha_servicio DATE PRIMARY KEY,
+    id_cliente VARCHAR(50),
+    id_tratamiento INT,
+    id_empleado INT,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(nombre_cliente),
+    FOREIGN KEY (id_tratamiento) REFERENCES tratamientos(id_tratamiento),
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado)
+);
+
+-- Insertar datos en la tabla de servicios
+INSERT INTO servicios (fecha_servicio, id_cliente, id_tratamiento, id_empleado) VALUES
+('2023-10-01', 'Laura', 1, 1),
+('2023-10-02', 'Miguel', 2, 2),
+('2023-10-03', 'Daniela', 3, 3),
+('2023-10-04', 'Fernando', 4, 4),
+('2023-10-05', 'Valeria', 5, 5);
