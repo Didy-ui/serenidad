@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Spa Serenidad, un espacio para relajarte y cuidar de tu bienestar.">
+    <meta name="author" content="Spa Serenidad">
+    <title>Procesamiento de Pago - Spa Serenidad</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffe5ec;
+            color: #333;
+        }
+        .navbar {
+            background-color: #ff8fab;
+        }
+        .navbar .navbar-brand,
+        .navbar .nav-link {
+            color: black !important;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 1.5rem;
+        }
+        .form-control {
+            margin-bottom: 1.5rem;
+        }
+        .btn-custom {
+            background-color: #fb6f92;
+            color: white;
+            width: 100%;
+            padding: 1rem;
+        }
+        .btn-custom:hover {
+            background-color: #ff4d75;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="Carousel Template · Bootstrap v5.1.html">Spa Serenidad</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="Carousel Template · Bootstrap v5.1.html">Inicio</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Servicios.html">Servicios</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="Contacto.html">Contacto</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+    </header>
+
+    <main class="container text-center">
+        <h1>Ingrese los Datos de su Tarjeta</h1>
+        <form id="paymentForm">
+            <div class="mb-3">
+                <label for="cardNumber" class="form-label">Número de Tarjeta</label>
+                <input type="text" class="form-control" id="cardNumber" placeholder="XXXX XXXX XXXX XXXX" required>
+            </div>
+            <div class="mb-3">
+                <label for="expiryDate" class="form-label">Fecha de Vencimiento</label>
+                <input type="month" class="form-control" id="expiryDate" required>
+            </div>
+            <div class="mb-3">
+                <label for="cvv" class="form-label">Código de Seguridad (CVV)</label>
+                <input type="password" class="form-control" id="cvv" placeholder="XXX" required>
+            </div>
+            <button type="submit" class="btn btn-custom">Procesar Pago</button>
+        </form>
+        
+        <div id="paymentMessage" class="mt-4" style="display: none;">
+            <h3 class="text-success">¡Pago Procesado Exitosamente!</h3>
+            <p>Su pago ha sido realizado correctamente. Gracias por elegir Spa Serenidad.</p>
+            <a href="Carousel Template · Bootstrap v5.1.html" class="btn btn-primary">Regresar al Inicio</a>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('paymentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevenir el envío del formulario
+
+            // Obtener los valores de los campos
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\s+/g, ''); // Eliminar espacios
+            const expiryDate = document.getElementById('expiryDate').value;
+            const cvv = document.getElementById('cvv').value;
+
+            // Validación de datos
+            const isCardValid = cardNumber.length === 16 && /^[0-9]{16}$/.test(cardNumber); // Validar que tenga 16 dígitos numéricos
+            const isCvvValid = cvv.length === 3 && /^[0-9]{3}$/.test(cvv); // Validar que el CVV tenga 3 dígitos
+
+            // Simular validación de datos (esto debería ser una llamada a un servidor en una aplicación real)
+            if (isCardValid && expiryDate && isCvvValid) {
+                // Ocultar el formulario
+                document.getElementById('paymentForm').style.display = 'none'; 
+
+                // Esperar 3 segundos antes de mostrar el mensaje de éxito
+                setTimeout(function() {
+                    document.getElementById('paymentMessage').style.display = 'block';
+                }, 3000); // 3000 milisegundos = 3 segundos
+            } else {
+                alert("Por favor, ingrese datos válidos.");
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
